@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Show Data</title>
+</head>
+<body>
+<h1>Персональные данные:</h1>
+<p>Name: <span th:text="${me.name}"></span></p>
+<p>Age: <span th:text="${me.surname}"></span></p>
+
+<table>
+    <tr>
+        <th>Роли</th>
+    </tr>
+    <tr th:each="role : ${me.getAuthorities()}">
+        <td th:text="${role}"></td>
+    </tr>
+</table>
+<a href="/logout">Выйти</a>
+</body>
+</html>
