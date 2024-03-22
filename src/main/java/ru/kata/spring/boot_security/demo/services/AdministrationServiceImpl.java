@@ -32,11 +32,12 @@ public class AdministrationServiceImpl implements AdministrationService{
     @Transactional
     @Override
     public void save(User user) {
-        Optional<Role> role = roleDao.findById(1);
-        if (role.isPresent()) {
-            user.addRole(role.get());
+
             userDao.save(user);
-        }
+    }
+
+    public List<Role> getAllRoles() {
+        return roleDao.findAll();
     }
 
     @Override

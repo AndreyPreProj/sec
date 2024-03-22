@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -22,14 +24,39 @@ public class AdminController {
         this.administrationService = administrationService;
     }
 
+    /*@GetMapping("/getOne")
+    public User getOne(@RequestParam("id") int id) {
+        System.out.println(administrationService.getById(id));
+        return administrationService.getById(id);
+    }*/
+
     @GetMapping
-    public String adminPage() {
+    public String adminPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        model.addAttribute("me", user);
+        model.addAttribute("all", administrationService.getAll());
         return "admin";
+    }
+
+    @GetMapping("/update")
+    public User getPersonById(@RequestParam("id") int id, Model model) {
+        return administrationService.getById(id);
+    }
+
+    @PostMapping("/update")
+    public String update(User user) {
+        administrationService.update(user);
+        return "redirect:/admin";
     }
 
 
     @GetMapping("/creation")
-    public String registration(@ModelAttribute("user") User user) {
+    public String registration(@ModelAttribute("user") User user, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User me = (User) auth.getPrincipal();
+        model.addAttribute("me", me);
+        model.addAttribute("roles", administrationService.getAllRoles());
         return "creation";
     }
 
@@ -37,20 +64,16 @@ public class AdminController {
     public String performRegistration(@ModelAttribute("user") User user) {
         administrationService.save(user);
 
-        return "redirect:/login";
+        return "redirect:/admin";
     }
 
-    @GetMapping("/update")
-    public String getPersonById(@RequestParam("id") int id, Model model) {
-        model.addAttribute("updatedPerson", administrationService.getById(id));
-        return "update";
-    }
-
-    @PostMapping("/update")
-    public String update(@ModelAttribute("updatedPerson") User user) {
+   /*@RequestMapping(value="/update", method = {RequestMethod.PUT, RequestMethod.GET})
+    public String update(User user) {
         administrationService.update(user);
-        return "redirect:/login";
-    }
+        return "redirect:/admin";
+    }*/
+
+
 
     @GetMapping("/delete")
     public String delete(@RequestParam("id") int id) {

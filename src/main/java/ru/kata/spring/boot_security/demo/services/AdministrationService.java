@@ -10,7 +10,7 @@ import java.util.List;
 public interface AdministrationService {
     public List<User> getAll();
     public void save(User user);
-    public User getById(int id);
+    public <Optional>User getById(int id);
     public void update(User user);
     public void delete(int id);
 }

@@ -1,25 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>New User</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Show Data</title>
 </head>
 <body>
+<div class="container">
+    <div class="row bg-dark align-items-center p-2">
+        <div class="col-11 align-self-start text-light">
+            <b th:text="${me.name}"/> with roles:
+            <span th:each="role : ${me.getAuthorities()}">
+                <span th:text="${role}"></span></span>
+        </div>
+        <a href="/logout" class="col-1 align-self-end text-light text-muted">Logout</a>
+    </div>
 
-<form class="mb-3" th:method="POST" th:action="@{/admin/creation}" th:object="${user}">
-    <label for="name">Enter name</label>
-    <input class="form-control" type="text" th:field="*{name}" id="name" required/>
-    <br/>
-    <label for="surname">Enter surname</label>
-    <input class="form-control" type="text" th:field="*{surname}" id="surname" required/>
-    <br/>
-    <label for="password">Enter password</label>
-    <input class="form-control" type="text" th:field="*{password}" id="password" required/>
-    <br/>
-        <input type="submit" value="Create!"/>
-</form>
-<a href="/logout">Выйти</a>
+    <div class="row pt-3">
+
+        <ul class="col-2 list-group">
+            <a href="/admin">
+                <li class="list-group-item active">Admin</li>
+            </a>
+            <a href="/user">
+                <li class="list-group-item" style="border: none">User</li>
+            </a>
+        </ul>
+
+        <div class="col-10 bg-light" style="height: 960px;">
+            <h4>Add new user</h4>
+            <ul class="nav mb-3">
+                <li class="nav-item bg-white pt-2 pl-3 pr-3 pb-2">
+                    <a href="/admin" class="text-dark">Users table</a>
+                </li>
+                <li class="nav-item p-2">New User</li>
+            </ul>
+
+            <h4>All user</h4>
+            <div class="bg-white p-4 ">
+                <form class="mb-3" th:method="POST" th:action="@{/admin/creation}" th:object="${user}">
+                    <div class="row justify-content-center">
+                        <div class="form-group col-sm-6 text-center">
+                            <label for="name">First and Last name</label>
+                            <input class="form-control" type="text" th:field="*{name}" id="name" required/>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="form-group col-sm-6 text-center">
+                            <label for="surname">Login</label>
+                            <input class="form-control bg-warning" type="text" th:field="*{surname}" id="surname" required/>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="form-group col-sm-6 text-center">
+                            <label for="password">Password</label>
+                            <input class="form-control bg-warning" type="password" th:field="*{password}" id="password" required/>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="form-group col-sm-6 text-center">
+                            <label for="roles">Role</label>
+                            <select th:field="*{roles}" size="2" class="form-control" id="roles">
+                                <option th:each="role : ${roles}"
+                                        th:value="${role.getRoleId()}"
+                                        th:text="${role.getAuthority()}">Wireframe
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <input type="submit" value="Add new user"/>
+                    </div>
+                </form>
+            </div>
+
+
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                    crossorigin="anonymous"></script>
+
 </body>
 </html>

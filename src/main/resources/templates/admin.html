@@ -1,12 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Show Data</title>
 </head>
 <body>
-Админка
+<div class="container">
+    <div class="row bg-dark align-items-center p-2">
+        <div class="col-11 align-self-start text-light">
+            <b th:text="${me.name}"/> with roles:
+            <span th:each="role : ${me.getAuthorities()}">
+                <span th:text="${role}"></span></span>
+        </div>
+        <a href="/logout" class="col-1 align-self-end text-light text-muted">Logout</a>
+    </div>
 
-<a href="/logout">Выйти</a>
+    <div class="row pt-3">
+
+        <ul class="col-2 list-group">
+            <a href="/admin">
+                <li class="list-group-item active">Admin</li>
+            </a>
+            <a href="/user">
+                <li class="list-group-item" style="border: none">User</li>
+            </a>
+        </ul>
+
+        <div class="col-10 bg-light" style="height: 960px;">
+            <h2>Admin panel</h2>
+            <ul class="nav mb-3">
+                <li class="nav-item bg-white pt-2 pl-3 pr-3 pb-2">
+                    <a href="/admin" class="text-dark">Users table</a>
+                </li>
+                <li class="nav-item p-2">New User</li>
+            </ul>
+
+            <h4>All user</h4>
+            <div class="bg-white p-4">
+                <table class="table table-striped">
+                    <tr class="bg-white">
+                        <th>ID</th>
+                        <th>username</th>
+                        <th>surname</th>
+                        <th>role</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+
+                    <tr th:each="user : ${all}">
+                        <td th:text="${user.userId}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.surname}"></td>
+                        <td>
+                            <div th:each="role : ${user.getAuthorities()}">
+                                <span th:text="${role}"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary edit-button" data-userid="${user.userId}">Edit</a>
+                        </td>
+                        <td>
+                            <button type="button">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form th:method="post" th:action="@{/admin/update}" th:object="${update}">
+                    <input type="text" id="userIdEdit" name="userIdEdit" th:field="*{userId}" readonly/>
+                    <label for="nameEdit">Enter new name: </label>
+                    <input type="text" id="nameEdit" name="nameEdit" th:field="*{name}"/>
+                    <br>
+                    <label for="surnameEdit">Enter last name: </label>
+                    <input type="text" id="surnameEdit" name="surnameEdit" th:field="*{surname}"/>
+                    <br>
+                    <input type="submit" value="Update!"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('.edit-button').click(function() {
+            var userId = $(this).closest('tr').find('td:nth-child(1)').text();
+            var name = $(this).closest('tr').find('td:nth-child(2)').text();
+            var surname = $(this).closest('tr').find('td:nth-child(3)').text();
+
+            $('#userIdEdit').val(userId);
+            $('#nameEdit').val(name);
+            $('#surnameEdit').val(surname);
+
+            $('#myModal').modal('show');
+        });
+    });
+</script>
+
+
 </body>
 </html>
