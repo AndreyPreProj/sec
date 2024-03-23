@@ -28,7 +28,7 @@ public interface UserDao extends JpaRepository<User, Integer> {
     Optional<User> findByName(String name);
 
     @Modifying
-    @Query("UPDATE User u SET u.name = :#{#newUser.name} WHERE u.userId = :userId")
+    @Query("UPDATE User u SET u.name = :#{#newUser.name}, u.role = :#{#newUser.roles} WHERE u.userId = :userId")
     void merge(@Param("newUser") User newUser, @Param("userId") int userId);
 }
 

@@ -39,6 +39,10 @@ public class AdministrationServiceImpl implements AdministrationService{
             userDao.save(user);
     }
 
+    public Role getRole(String id) {
+        return roleDao.findRoleByName(id).get();
+    }
+
     public List<Role> getAllRoles() {
         return roleDao.findAll();
     }
@@ -52,20 +56,8 @@ public class AdministrationServiceImpl implements AdministrationService{
     @Override
     public void update(User user) {
 
-      /*User oldUser = userDao.findById(user.getUserId()).get();
+        userDao.save(user);
 
-      Collection<Role> roles  = oldUser.getRole();
-      Role role = roleDao.findRoleByName(user.getRol()).get();
-
-      if (roles.contains(role)) {
-          // do nothing
-      } else {
-          roles.add(role);
-      }
-
-      user.setRole(roles);*/
-
-        userDao.merge(user, user.getUserId());
     }
 
     @Transactional

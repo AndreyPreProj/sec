@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.AdministrationServiceImpl;
 
@@ -29,6 +30,7 @@ public class AdminController {
         System.out.println(administrationService.getById(id));
         return administrationService.getById(id);
     }*/
+
 
     @GetMapping
     public String adminPage(Model model) {
@@ -77,8 +79,8 @@ public class AdminController {
 
 
 
-    @GetMapping("/delete")
-    public String delete(@RequestParam("id") int id) {
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id) {
         administrationService.delete(id);
         return "redirect:/admin";
     }
