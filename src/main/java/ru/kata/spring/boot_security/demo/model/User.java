@@ -1,17 +1,10 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.ManyToMany;
-import javax.persistence.FetchType;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinTable;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -21,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
@@ -60,6 +54,7 @@ public class User implements UserDetails {
 
         role.add(roles);
     }
+
     public Collection<Role> getRoles() {
         return role;
     }

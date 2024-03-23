@@ -1,3 +1,4 @@
+/*
 $('document').ready(function(){
     $('.table .btn').on('click',function(event){
 
@@ -9,4 +10,4 @@ $('document').ready(function(){
 
         $('#myModal').modal();
     });
-});
+});*/

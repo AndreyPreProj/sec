@@ -36,12 +36,14 @@ public class AdminController {
         User user = (User) auth.getPrincipal();
         model.addAttribute("me", user);
         model.addAttribute("all", administrationService.getAll());
+        model.addAttribute("roles", administrationService.getAllRoles());
         return "admin";
     }
 
-    @GetMapping("/update")
-    public User getPersonById(@RequestParam("id") int id, Model model) {
-        return administrationService.getById(id);
+    @GetMapping("/update/{id}")
+    public String getUserById(@PathVariable int id, Model model) {
+        model.addAttribute("update", administrationService.getById(id));
+        return "update";
     }
 
     @PostMapping("/update")

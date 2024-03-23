@@ -38,7 +38,7 @@
                 <li class="nav-item bg-white pt-2 pl-3 pr-3 pb-2">
                     <a href="/admin" class="text-dark">Users table</a>
                 </li>
-                <li class="nav-item p-2">New User</li>
+                <li class="nav-item p-2"><a href="/admin/creation">New User</a></li>
             </ul>
 
             <h4>All user</h4>
@@ -59,11 +59,12 @@
                         <td th:text="${user.surname}"></td>
                         <td>
                             <div th:each="role : ${user.getAuthorities()}">
-                                <span th:text="${role}"></span>
+                                <span th:text="${role.getAuthority().substring(5)}"></span>
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-primary edit-button" data-userid="${user.userId}">Edit</a>
+                            <button class="btn btn-primary edit-user" type="button" id="edit-user" data-toggle="modal"
+                                    data-target="#myModal" th:data-userId="${user.userId}">Edit</button>
                         </td>
                         <td>
                             <button type="button">Delete</button>
@@ -80,21 +81,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="myModalLabel">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form th:method="post" th:action="@{/admin/update}" th:object="${update}">
-                    <input type="text" id="userIdEdit" name="userIdEdit" th:field="*{userId}" readonly/>
+                <form>
+                    <input type="text" id="userIdEdit" name="userIdEdit" readonly/>
                     <label for="nameEdit">Enter new name: </label>
-                    <input type="text" id="nameEdit" name="nameEdit" th:field="*{name}"/>
+                    <input type="text" id="nameEdit" name="nameEdit"/>
                     <br>
                     <label for="surnameEdit">Enter last name: </label>
-                    <input type="text" id="surnameEdit" name="surnameEdit" th:field="*{surname}"/>
+                    <input type="text" id="surnameEdit" name="surnameEdit"/>
                     <br>
-                    <input type="submit" value="Update!"/>
+                    <input type="password" id="passwordEdit" name="passwordEdit"/>
+                    <br>
+
+                    <input type="submit" id="edit-save-button" value="Update!"/>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -104,27 +109,63 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script type="text/javascript" src="../static/main.js" th:src="@{/main.js}"></script>
 
-<script th:inline="javascript">
-    $(document).ready(function() {
-        $('.edit-button').click(function() {
-            var userId = $(this).closest('tr').find('td:nth-child(1)').text();
-            var name = $(this).closest('tr').find('td:nth-child(2)').text();
-            var surname = $(this).closest('tr').find('td:nth-child(3)').text();
+ <script>
+     $('#myModal').on('shown.bs.modal', function (event) {
+         let button = $(event.relatedTarget); // Кнопка, вызвавшая модальное окно
+         let userId = button.data('userid'); // Получение userId из атрибута data-userId
 
-            $('#userIdEdit').val(userId);
-            $('#nameEdit').val(name);
-            $('#surnameEdit').val(surname);
+         if (userId) {
+             $.get({
+                 url: '/api/update/' + userId,
+                 success: (data) => {
+                     let modal = $(this);
+                     modal.find('#userIdEdit').val(data.userId); // Установка значения userId
+                     modal.find('#nameEdit').val(data.name); // Установка значения имени
+                     modal.find('#surnameEdit').val(data.surname); // Установка значения фамилии
+                     modal.find('#passwordEdit').val(data.password);
+                 },
+                 error: (err) => {
+                     alert(err);
+                 }
+             });
+         }
+     });
 
-            $('#myModal').modal('show');
-        });
-    });
+     $('#edit-save-button').click(function() {
+         let modal = $('#myModal');
+         let user = {
+             userId: modal.find('#userIdEdit').val(),
+             name: modal.find('#nameEdit').val(),
+             surname: modal.find('#surnameEdit').val(),
+             password: modal.find('#passwordEdit').val()
+         };
+
+         if (modal.find('#userIdEdit').val()) {
+             user.userId = modal.find('#userIdEdit').val();
+         }
+
+         $.ajax({
+             url: '/api/update',
+             type: 'POST',
+             data: JSON.stringify(user),
+             contentType: "application/json; charset=utf-8",
+             dataType: "json",
+             success: () => {
+                 location.reload();
+             },
+             error: (err) => {
+                 alert(err);
+             }
+         });
+
+         modal.modal('hide');
+     });
 </script>
-
 
 </body>
 </html>
