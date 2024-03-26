@@ -67,7 +67,8 @@
                                     data-target="#myModal" th:data-userId="${user.userId}">Edit</button>
                         </td>
                         <td>
-                            <button type="buton" class="btn btn-danger delete-user" id="delete-user" data-toggle="modal"
+
+                            <button type="button" class="btn btn-danger delete-user" id="delete-user" data-toggle="modal"
                                     data-target="#myModalDelete" th:data-userId="${user.userId}">Delete</button>
                         </td>
                     </tr>
@@ -82,7 +83,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="myModalLabel">Edit user</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -91,35 +92,35 @@
                 <form>
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
-                            <label for="userIdEdit">Identifier</label>
-                            <input type="text" id="userIdEdit" name="userIdEdit" readonly/>
+                            <label for="userIdEdit"><b></b>Identifie</b></label>
+                            <input type="text" style="background-color: #FFE4B5" id="userIdEdit" name="userIdEdit" readonly/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
-                            <label for="nameEdit">Enter new login: </label>
+                            <label for="nameEdit"><b>Enter new login:</b> </label>
                             <input type="text" id="nameEdit" name="nameEdit"/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
-                            <label for="surnameEdit">Enter new surname: </label>
+                            <label for="surnameEdit"><b>Enter new surname:</b> </label>
                             <input type="text" id="surnameEdit" name="surnameEdit"/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
-                            <label for="passwordEdit">Enter new password: </label>
+                            <label for="passwordEdit"><b>Enter new password:</b> </label>
                             <input type="password" id="passwordEdit" name="passwordEdit"/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
-
+                        <label for="roleSelect"><b>Choose new role</b></label>
                             <select th:field="*{roles}" size="2" class="form-control" id="roleSelect">
                                 <option th:each="role : ${roles}"
                                         th:value="${role.getAuthority()}"
@@ -140,13 +141,11 @@
 </div>
 
 
-
-
 <div class="modal" id="myModalDelete">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalDeleteLabel">Modal title</h5>
+                <h5 class="modal-title" id="myModalDeleteLabel">Delete user</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -156,35 +155,35 @@
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="userIdEdit">Identifier</label>
-                            <input type="text" id="userIdDelete" name="userIdEdit" readonly/>
+                            <input type="text" style="background-color: #FFE4B5" id="userIdDelete" name="userIdEdit" readonly/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="nameEdit">Enter new login: </label>
-                            <input type="text" id="nameDelete" name="nameEdit"/>
+                            <input type="text" style="background-color: #FFE4B5" id="nameDelete" name="nameEdit" readonly/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="surnameEdit">Enter new surname: </label>
-                            <input type="text" id="surnameDelete" name="surnameEdit"/>
+                            <input type="text" style="background-color: #FFE4B5" id="surnameDelete" name="surnameEdit" readonly/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="passwordEdit">Enter new password: </label>
-                            <input type="password" id="passwordDelete" name="passwordEdit"/>
+                            <input type="password" style="background-color: #FFE4B5" id="passwordDelete" name="passwordEdit" readonly/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
 
-                            <select th:field="*{roles}" size="2" class="form-control" id="roleSelectDelete">
+                            <select style="background-color: #FFE4B5" th:field="*{roles}" size="2" class="form-control" id="roleSelectDelete">
                                 <option th:each="role : ${roles}"
                                         th:value="${role.getAuthority()}"
                                         th:text="${role.getAuthority()}">
@@ -193,8 +192,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input class="btn btn-danger" type="submit" id="edit-delete-button" value="Delete"/>
+                        <input class="btn btn-danger" type="submit" id="delete-button" value="Delete"/>
+
                     </div>
                 </form>
             </div>
@@ -202,14 +203,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
@@ -265,46 +258,7 @@
                  });
          }
      });
-
-     $('#edit-save-button').click(function() {
-         let roleId = $('#roleSelect').val();
-         let modal = $('#myModal');
-         let user = {
-             userId: modal.find('#userIdEdit').val(),
-             name: modal.find('#nameEdit').val(),
-             surname: modal.find('#surnameEdit').val(),
-             password: modal.find('#passwordEdit').val(),
-             role: {}
-         };
-
-         if (modal.find('#userIdEdit').val()) {
-             user.userId = modal.find('#userIdEdit').val();
-         }
-
-         fetch('/api/update/' + roleId, {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json'
-             },
-             body: JSON.stringify(user)
-         })
-             .then(response => response.json())
-             .then(() => {
-                 location.reload();
-             })
-             .catch(err => {
-                 alert(err);
-             });
-
-         modal.modal('hide');
-     });
-
-
-
-
-
-
-
+     let id;
 
 
      $('#edit-save-button').click(function() {
@@ -317,6 +271,7 @@
              password: modal.find('#passwordEdit').val(),
              role: {}
          };
+         id = user.userId;
 
          if (modal.find('#userIdEdit').val()) {
              user.userId = modal.find('#userIdEdit').val();

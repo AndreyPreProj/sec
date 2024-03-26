@@ -31,8 +31,6 @@ public class UserResource {
 
     @PostMapping("/update/{id}")
     public void update(@RequestBody User user, @PathVariable String id) {
-        /*Role role = administrationService.getRole(id);
-        System.out.println(role);*/
         user.addRole(administrationService.getRole(id));
         administrationService.update(user);
     }

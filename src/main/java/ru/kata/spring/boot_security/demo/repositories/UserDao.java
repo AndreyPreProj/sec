@@ -26,9 +26,5 @@ public interface UserDao extends JpaRepository<User, Integer> {
 
     @Query(value = "select distinct u from User u left join fetch u.role where u.name = ?1")
     Optional<User> findByName(String name);
-
-    @Modifying
-    @Query("UPDATE User u SET u.name = :#{#newUser.name}, u.role = :#{#newUser.roles} WHERE u.userId = :userId")
-    void merge(@Param("newUser") User newUser, @Param("userId") int userId);
 }
 
