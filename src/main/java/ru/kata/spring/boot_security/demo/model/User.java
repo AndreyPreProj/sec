@@ -16,6 +16,8 @@ import java.util.List;
 @Table(name = "user")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails {
+    @Transient
+    private static final long serialVersionUID = 5564657948319054801L;
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,16 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role")
     private List<Role> role;
+    @Transient
+    private String between;
+
+    public String getBetween() {
+        return between;
+    }
+
+    public void setBetween(String between) {
+        this.between = between;
+    }
 
     public User() {
     }
@@ -91,6 +103,13 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public List<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(List<Role> role) {
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

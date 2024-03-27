@@ -31,7 +31,28 @@ public class UserResource {
 
     @PostMapping("/update/{id}")
     public void update(@RequestBody User user, @PathVariable String id) {
-        user.addRole(administrationService.getRole(id));
+        String[] roles = user.getBetween().replace(" ", "").split(",");
+
+        if (roles.length >= 2) {
+            for (String role : roles) {
+                user.addRole(administrationService.getRole(role));
+            }
+
+
+            administrationService.update(user);
+            return;
+        }
+
+        if (roles.length == 0) {
+            //
+        } else {
+            user.addRole(administrationService.getRole(user.getBetween()));
+
+            if (!user.getRoles().contains(administrationService.getRole(id))) {
+                user.addRole(administrationService.getRole(id));
+            }
+        }
+
         administrationService.update(user);
     }
 

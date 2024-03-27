@@ -58,7 +58,12 @@ public class AdministrationServiceImpl implements AdministrationService{
   @Transactional
     @Override
     public void update(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User oldUser = userDao.getById(user.getUserId());
+
+        if (!user.getPassword().equals(oldUser.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         entityManager.merge(user);
 
     }

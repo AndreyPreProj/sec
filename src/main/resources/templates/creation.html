@@ -17,7 +17,7 @@
         <div class="col-11 align-self-start text-light">
             <b th:text="${me.name}"/> with roles:
             <span th:each="role : ${me.getAuthorities()}">
-                <span th:text="${role}"></span></span>
+                <span th:text="${role.getAuthority().substring(5)}"></span></span>
         </div>
         <a href="/logout" class="col-1 align-self-end text-light text-muted">Logout</a>
     </div>
@@ -55,14 +55,16 @@
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="surname"><b>Login</b></label>
-                            <input class="form-control" style="background-color: #F0E68C" type="text" th:field="*{surname}" id="surname" required/>
+                            <input class="form-control" style="background-color: #F0E68C" type="text"
+                                   th:field="*{surname}" id="surname" required/>
                         </div>
                     </div>
 
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="password"><b>Password</b></label>
-                            <input class="form-control" style="background-color: #F0E68C" type="password" th:field="*{password}" id="password" required/>
+                            <input class="form-control" style="background-color: #F0E68C" type="password"
+                                   th:field="*{password}" id="password" required/>
                         </div>
                     </div>
 
@@ -72,7 +74,7 @@
                             <select th:field="*{roles}" size="2" class="form-control" id="roles">
                                 <option th:each="role : ${roles}"
                                         th:value="${role.getRoleId()}"
-                                        th:text="${role.getAuthority()}">Wireframe
+                                        th:text="${role.getAuthority().substring(5)}">
                                 </option>
                             </select>
                         </div>
@@ -82,9 +84,8 @@
                         <input type="submit" class="btn btn-success" value="Add new user"/>
                     </div>
                 </form>
+
             </div>
-
-
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
                     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
                     crossorigin="anonymous"></script>
