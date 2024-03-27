@@ -17,7 +17,7 @@
         <div class="col-11 align-self-start text-light">
             <b th:text="${me.name}"/> with roles:
             <span th:each="role : ${me.getAuthorities()}">
-                <span th:text="${role}"></span></span>
+                <span th:text="${role.getAuthority().substring(5)}"></span></span>
         </div>
         <a href="/logout" class="col-1 align-self-end text-light text-muted">Logout</a>
     </div>
@@ -45,8 +45,8 @@
                     <td th:text="${me.getName()}"></td>
                     <td th:text="${me.getSurname()}"></td>
                     <td>
-                        <div th:each="role : ${me.getAuthorities()}">
-                            <span th:text="${role}"></span>
+                        <div th:each="role : ${me.getAuthorities()}" style="display: inline-block;">
+                            <span th:text="${role.getAuthority().substring(5)}"></span>
                         </div>
                     </td>
                 </tr>

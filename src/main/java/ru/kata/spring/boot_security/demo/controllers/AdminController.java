@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.services.AdministrationServiceImpl;
@@ -15,7 +16,7 @@ import ru.kata.spring.boot_security.demo.services.AdministrationServiceImpl;
 
 
 @RequestMapping("/admin")
-@Controller
+@RestController
 public class AdminController {
 
     private final AdministrationServiceImpl administrationService;
@@ -25,21 +26,19 @@ public class AdminController {
         this.administrationService = administrationService;
     }
 
-    /*@GetMapping("/getOne")
-    public User getOne(@RequestParam("id") int id) {
-        System.out.println(administrationService.getById(id));
-        return administrationService.getById(id);
-    }*/
-
-
     @GetMapping
-    public String adminPage(Model model) {
+    public ModelAndView adminPage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
         model.addAttribute("me", user);
         model.addAttribute("all", administrationService.getAll());
         model.addAttribute("roles", administrationService.getAllRoles());
-        return "admin";
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin");
+        modelAndView.addObject("model", model);
+
+        return modelAndView;
     }
 
     @GetMapping("/update/{id}")
@@ -49,37 +48,48 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String update(User user) {
+    public ModelAndView  update(User user, Model model) {
         administrationService.update(user);
-        return "redirect:/admin";
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin");
+        modelAndView.addObject("model", model);
+
+        return modelAndView;
     }
 
 
     @GetMapping("/creation")
-    public String registration(@ModelAttribute("user") User user, Model model) {
+    public ModelAndView registration(@ModelAttribute("user") User user, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User me = (User) auth.getPrincipal();
         model.addAttribute("me", me);
         model.addAttribute("roles", administrationService.getAllRoles());
-        return "creation";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("creation");
+        modelAndView.addObject("model", model);
+
+        return modelAndView;
     }
 
     @PostMapping("/creation")
-    public String performRegistration(@ModelAttribute("user") User user) {
+    public ModelAndView performRegistration(@ModelAttribute("user") User user, Model model) {
         administrationService.save(user);
 
-        return "redirect:/admin";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/admin");
+        modelAndView.addObject("model", model);
+
+        return modelAndView;
     }
 
-   /*@RequestMapping(value="/update", method = {RequestMethod.PUT, RequestMethod.GET})
-    public String update(User user) {
-        administrationService.update(user);
-        return "redirect:/admin";
-    }*/
-
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public ModelAndView delete(@PathVariable("id") int id, Model model) {
         administrationService.delete(id);
-        return "redirect:/admin";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin");
+        modelAndView.addObject("model", model);
+
+        return modelAndView;
     }
 }
