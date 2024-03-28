@@ -37,23 +37,22 @@ public class UserResource {
             for (String role : roles) {
                 user.addRole(administrationService.getRole(role));
             }
+        }
 
+        if (id == null) {
+            administrationService.update(user);
+
+        } else {
+            String[] roleArray = id.replace(" ", "").split(",");
+
+            for (String role : roleArray) {
+                user.addRole(administrationService.getRole(role));
+            }
 
             administrationService.update(user);
-            return;
+
         }
 
-        if (roles.length == 0) {
-            //
-        } else {
-            user.addRole(administrationService.getRole(user.getBetween()));
-
-            if (!user.getRoles().contains(administrationService.getRole(id))) {
-                user.addRole(administrationService.getRole(id));
-            }
-        }
-
-        administrationService.update(user);
     }
 
 

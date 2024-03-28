@@ -71,7 +71,7 @@
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="roles"><b>Role</b></label>
-                            <select th:field="*{roles}" size="2" class="form-control" id="roles">
+                            <select th:field="*{roles}" size="2" class="form-control" id="roles" multiple>
                                 <option th:each="role : ${roles}"
                                         th:value="${role.getRoleId()}"
                                         th:text="${role.getAuthority().substring(5)}">

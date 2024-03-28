@@ -129,7 +129,7 @@
                     <div class="row justify-content-center">
                         <div class="form-group col-sm-6 text-center">
                             <label for="roleSelect"><b>Choose new role</b></label>
-                            <select th:field="*{roles}" size="2" class="form-control" id="roleSelect">
+                            <select th:field="*{roles}" size="2" class="form-control" id="roleSelect" multiple>
                                 <option th:each="role : ${roles}"
                                         th:value="${role.getAuthority()}"
                                         th:text="${role.getAuthority().substring(5)}">
@@ -310,7 +310,7 @@
                 location.reload();
             })
             .catch(err => {
-                alert(err);
+
             });
 
         modal.modal('hide');
