@@ -1,20 +1,31 @@
-version: '3'
+version: '3.8'
 
 services:
-  mysql:
-    image: 'mysql:8'
-    container_name: 'mysql-container'
+  mysql-container:
+    image: mysql:latest
     environment:
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=pass
-      - MYSQL_DATABASE=datab  # Replace with your desired database name
+      MYSQL_DATABASE: datab
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: root  # Optional, for root access
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
 
-  app:
-    build: .  # Builds the application from the Dockerfile in the current directory
-    container_name: 'app-container'
+  app-container:
+    build: .  # Build the image from the current directory (.)
     depends_on:
-      - mysql  # Ensures app starts after MySQL is ready
+      - mysql-container  # Ensure MySQL starts before Spring Boot app
+    environment:
+      # Define your database connection details here (replace placeholders)
+      DB_HOST: mysql-container
+      DB_PORT: 3306
+      DB_NAME: datab
+      DB_USER: user
+      DB_PASSWORD: pass
     ports:
-      - "8081:8080"  # Example port mapping for your app (replace 80 with your app's port)
+      - "8080:8080"  # Expose your Spring Boot app port
+
+volumes:
+  mysql-data: {}
